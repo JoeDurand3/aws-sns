@@ -90,7 +90,6 @@ jobs:
         run: |
           echo '::echo::on'
           URL=$(terraform output -raw ecr_respository_url)
-          echo $URL
           echo "::set-output name=ecr_registry_url::$URL"
         working-directory: ${{env.tf-directory}}
         
