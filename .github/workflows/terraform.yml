@@ -72,7 +72,6 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
