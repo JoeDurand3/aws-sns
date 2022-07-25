@@ -87,8 +87,10 @@ jobs:
 
       - name: Terraform Output - ECR Registry Url
         id: terraform_output_ecr_registry_url
-        run: echo "::set-output name=ecr_registry_url::${terraform output ecr_respository_url}"
-        working-directory: ${{env.tf-directory}}
+        run: |
+          URL=$(terraform output ecr_respository_url)
+          echo $URL
+          echo "::set-output name=ecr_registry_url::$URL"
         
   build-upload:
     name: "Build and upload to ECS"
