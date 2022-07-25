@@ -88,7 +88,8 @@ jobs:
       - name: Terraform Output - ECR Registry Url
         id: terraform_output_ecr_registry_url
         run: |
-          URL=$(terraform output ecr_respository_url)
+          echo '::echo::on'
+          URL=$(terraform output -raw ecr_respository_url)
           echo $URL
           echo "::set-output name=ecr_registry_url::$URL"
         working-directory: ${{env.tf-directory}}
