@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       tf-directory: ./tf
+    outputs:
+      ecr_registry_url: ${{ steps.terraform_output_ecr_registry_url.outputs.ecr_registry_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -84,6 +86,7 @@ jobs:
         working-directory: ${{env.tf-directory}}
 
       - name: Terraform Output - ECR Registry Url
+        id: terraform_output_ecr_registry_url
         run: echo "::set-output name=ecr_registry_url::$(terraform output ecr_respository_url)"
         working-directory: ${{env.tf-directory}}
         
