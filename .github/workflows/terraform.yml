@@ -5,14 +5,13 @@ on:
     branches:
       - master
   pull_request:
-defaults:
-  run:
-    working-directory: tf
 
 jobs:
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
+    env:
+      tf-directory: ./tf
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,24 +21,29 @@ jobs:
         with:
           # terraform_version: 0.13.0:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
+        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Init
         id: init
         run: terraform init
+        working-directory: ${{env.tf-directory}}
       
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Plan
         id: plan
         if: github.event_name == 'pull_request'
         run: terraform plan -no-color -input=false
         continue-on-error: true
+        working-directory: ${{env.tf-directory}}
 
       - uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
@@ -69,17 +73,21 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
+        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
         run: exit 1
+        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
+        working-directory: ${{env.tf-directory}}
 
       - name: Terraform Output - ECR Registry Url
         run: echo "::set-output name=ecr_registry_url::$(terraform output ecr_respository_url)"
+        working-directory: ${{env.tf-directory}}
         
   build-upload:
     name: "Build and upload to ECS"
