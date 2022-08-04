@@ -108,6 +108,7 @@ jobs:
           secrets: |
               aws/creds/ecr_pusher access_key | AWS_ACCESS_KEY_ID;
               aws/creds/ecr_pusher secret_key | AWS_SECRET_ACCESS_KEY;
+              aws/creds/ecr_pusher security_token | AWS_SESSION_TOKEN;
       
       - name: Sleep for 10 seconds
         run: sleep 10s
