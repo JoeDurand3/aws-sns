@@ -134,4 +134,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: [ $ECR_REGISTRY:$IMAGE_TAG ]
+          tags: $ECR_REGISTRY:$IMAGE_TAG
