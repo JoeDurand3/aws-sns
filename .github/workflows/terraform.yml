@@ -129,7 +129,7 @@ jobs:
       - name: test
         shell: bash
         run: | 
-          ls
+          ls -lha
 
       - name: Docker build/tag/push
         uses: docker/build-push-action@v2
