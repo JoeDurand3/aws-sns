@@ -8,7 +8,7 @@ RUN go mod download
 FROM golang:1.18.1-alpine3.14 as builder
 COPY --from=modules /go/pkg /go/pkg
 #COPY . /app
-#WORKDIR /app
+WORKDIR /
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build main.go
 
