@@ -131,9 +131,13 @@ jobs:
         run: | 
           ls -lha
 
+      - name: test
+        shell: bash
+        run: | 
+          pwd
+
       - name: Docker build/tag/push
         uses: docker/build-push-action@v2
         with:
-          context: .
           push: true
           tags: ${{ github.sha }}
