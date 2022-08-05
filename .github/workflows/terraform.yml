@@ -130,7 +130,7 @@ jobs:
         id: metadata
         uses: docker/metadata-action@v3
         with:
-          images: ${{ needs.terraform.outputs.ecr_registry_url }}/${{ github.sha }}
+          images: ${{ steps.ecr-login.outputs.registry }}/${{ github.sha }}
           tags: |
             type=raw,value=latest
             type=raw,value=main
@@ -150,3 +150,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          tags: ${{ steps.ecr-login.outputs.registry }}/${{ github.sha }}
