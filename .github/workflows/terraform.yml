@@ -99,6 +99,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: terraform
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Import Secrets
         uses: hashicorp/vault-action@v2.4.0
         with:
