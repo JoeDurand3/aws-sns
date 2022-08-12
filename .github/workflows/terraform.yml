@@ -16,7 +16,7 @@ jobs:
     name: "Terraform"
     runs-on: ubuntu-latest
     env:
-      tf-directory: ./devops/tf
+      tf-directory: ./devops/terraform
     outputs:
       ecr_registry_url: ${{ steps.terraform_output_ecr_registry_url.outputs.ecr_registry_url }}
     steps:
@@ -161,8 +161,8 @@ jobs:
     #  - terraform
     #  - build-upload
     runs-on: ubuntu-latest
-    env:
-      tf-directory: ./devops/tf
+    container:
+      image: hashicorp/levant
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -175,9 +175,15 @@ jobs:
           caCertificate: ${{ secrets.VAULT_CA_CERT }}
           secrets: |
               nomad/creds/developer secret_id | NOMAD_TOKEN;
-              
-      - name: Deploy with Nomad
-        uses: scott-ad-riley/nomad-deploy-action@master
+
+      - name: Deploy2
+        id: terraform_output_ecr_registry_url
+        run: |
+          levant deploy
+        working-directory: ${{env.tf-directory}}
+
+      - name: Deploy with Levant
+        uses: NeoCharge/nomad-deploy-action@master
         env:
           ECR_REGISTRY: ${{ needs.terraform.outputs.ecr_registry_url }}
           ECR_REPOSITORY: ${{ env.APPLICATION_NAME }}
