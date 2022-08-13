@@ -46,7 +46,7 @@ job "${job_name}" {
       }
 
       env = {
-        TESTVARR = ${env_TESTVARR}
+        "TESTVARR" = "${env_TESTVARR}"
       }
     }
   }
