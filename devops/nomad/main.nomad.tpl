@@ -45,7 +45,9 @@ job "${job_name}" {
         memory = ${service_memory_mb} # MB
       }
 
-      env = ${env}
+      env = {
+        TESTVARR = ${env_TESTVARR}
+      }
     }
   }
 }
